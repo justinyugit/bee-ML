@@ -9,14 +9,14 @@ import sys
 import csv
 import os
 
+name = sys.argv[1]
+txtName = name[27:37] + "--" + name[38:43]
+video = cv2.VideoCapture(name)
 net = cv2.dnn.readNet("YOLO/yolov3_training_final.weights", "YOLO/yolov3_testing.cfg")
-classes=["bee"]
 layer_names=net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
-colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
-def YOLO():
-    cap = cv2.VideoCapture(sys.argv[1])
+def YOLO(cap):
     frames = 0
     while (frames < 30000):
         frames=frames+1
@@ -33,8 +33,9 @@ def YOLO():
                 confidence = scores[class_id]
                 if confidence > .3:
                     center_x = int(detection[0] * width)
-                    #print(center_x)
+                    #below divide by 8 to get percentage of distance down the tube
+                    os.system("echo '{}    {}' >> {}.txt".format(center_x/8, frames, txtName))
         key = cv2.waitKey(1)
 
-YOLO()
+YOLO(video)
 cv2.destroyAllWindows()
