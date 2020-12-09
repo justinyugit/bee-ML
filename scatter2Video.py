@@ -34,8 +34,7 @@ def YOLO(cap):
                 if confidence > .3:
                     center_x = int(detection[0] * width)
                     #below divide by 8 to get percentage of distance down the tube
-                    #os.system("echo '{}    {}' >> {}.txt".format(center_x/8, frames, txtName))
-                    os.system("echo '{}    {}' >> high2.txt".format(center_x/8, frames))
+                    os.system("echo '{}    {}' >> low2.txt".format(center_x/8, frames))
         key = cv2.waitKey(1)
 
 YOLO(video)
